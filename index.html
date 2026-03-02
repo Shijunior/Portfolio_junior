@@ -14,6 +14,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     
+    <!-- Animate.css (light version) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
         :root {
             --primary: #1e3c5c;
@@ -25,6 +28,8 @@
             --border-light: #d4e0ec;
             --card-white: #ffffff;
             --shadow: 0 8px 24px rgba(0,20,40,0.06);
+            --shadow-hover: 0 15px 35px rgba(0,20,40,0.12);
+            --transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,14 +39,72 @@
             color: var(--text-dark);
             background-color: var(--bg-light);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
-        /* Navbar */
+        /* ===== ANIMATIONS PERSONNALISÉES ===== */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(58, 107, 79, 0.3); }
+            70% { box-shadow: 0 0 0 12px rgba(58, 107, 79, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(58, 107, 79, 0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Classes d'animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+        }
+        
+        .animate-on-scroll.visible [data-animation="slide-left"] {
+            animation: slideInLeft 0.8s forwards;
+        }
+        
+        .animate-on-scroll.visible [data-animation="slide-right"] {
+            animation: slideInRight 0.8s forwards;
+        }
+        
+        .animate-on-scroll.visible [data-animation="fade-up"] {
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        /* Navbar avec animation */
         .navbar {
             background-color: rgba(255,255,255,0.96);
             backdrop-filter: blur(8px);
             box-shadow: 0 2px 15px rgba(0,0,0,0.03);
             padding: 0.8rem 0;
+            transition: var(--transition);
+        }
+        
+        .navbar.scrolled {
+            padding: 0.4rem 0;
+            background-color: rgba(255,255,255,0.98);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
         
         .navbar-brand {
@@ -49,10 +112,21 @@
             font-size: 1.6rem;
             color: var(--primary) !important;
             letter-spacing: -0.5px;
+            transition: var(--transition);
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.03);
+            color: var(--accent) !important;
         }
         
         .navbar-brand span {
             color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .navbar-brand:hover span {
+            color: var(--primary);
         }
         
         .nav-link {
@@ -60,9 +134,28 @@
             color: var(--text-dark) !important;
             margin: 0 0.4rem;
             font-size: 0.95rem;
-            transition: 0.2s;
+            transition: var(--transition);
             border-radius: 30px;
             padding: 0.5rem 1rem !important;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 60%;
         }
         
         .nav-link:hover {
@@ -75,26 +168,53 @@
             background-color: var(--primary-light);
         }
         
-        /* Hero */
+        /* Hero avec animation flottante */
         .hero {
             padding: 130px 0 80px;
             background: linear-gradient(145deg, #f0f6fd 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(58,107,79,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 8s infinite ease-in-out;
         }
         
         .hero h1 {
             font-size: 3rem;
             font-weight: 700;
             color: var(--primary);
+            animation: slideInLeft 1s ease-out;
         }
         
         .hero .highlight {
             color: var(--accent);
             border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            transition: var(--transition);
+        }
+        
+        .hero .highlight:hover {
+            transform: scale(1.02);
+            border-color: var(--primary);
         }
         
         .hero .lead {
             font-size: 1.3rem;
             color: var(--text-muted);
+            animation: fadeInUp 1s 0.2s both;
+        }
+        
+        .hero p:not(.lead) {
+            animation: fadeInUp 1s 0.4s both;
         }
         
         .avatar-placeholder {
@@ -110,6 +230,15 @@
             font-weight: 600;
             box-shadow: var(--shadow);
             margin: 0 auto;
+            transition: var(--transition);
+            animation: float 6s infinite ease-in-out;
+            cursor: default;
+        }
+        
+        .avatar-placeholder:hover {
+            border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+            transform: scale(1.02) rotate(2deg);
+            box-shadow: var(--shadow-hover);
         }
         
         .badge-cv {
@@ -124,11 +253,19 @@
             margin-bottom: 0.6rem;
             display: inline-block;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+        
+        .badge-cv:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,40,80,0.1);
+            border-color: var(--accent);
         }
         
         /* Sections */
         .section {
             padding: 70px 0;
+            transition: var(--transition);
         }
         
         .section-title {
@@ -147,9 +284,15 @@
             background: var(--accent);
             margin: 0.6rem auto 0;
             border-radius: 4px;
+            transition: width 0.8s ease;
         }
         
-        /* Cartes compétences (sans barres) */
+        .section:hover .section-title::after {
+            width: 120px;
+            background: var(--primary);
+        }
+        
+        /* Cartes compétences animées */
         .skill-card {
             background: var(--card-white);
             border-radius: 24px;
@@ -157,6 +300,31 @@
             box-shadow: var(--shadow);
             height: 100%;
             border: 1px solid var(--border-light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--accent);
+            transition: height 0.6s ease;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: transparent;
+        }
+        
+        .skill-card:hover::before {
+            height: 100%;
         }
         
         .skill-category {
@@ -164,6 +332,12 @@
             font-weight: 600;
             margin-bottom: 1.2rem;
             font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .skill-card:hover .skill-category {
+            color: var(--accent);
+            transform: translateX(5px);
         }
         
         .skill-list {
@@ -181,6 +355,15 @@
             border-radius: 30px;
             font-size: 0.9rem;
             font-weight: 500;
+            transition: var(--transition);
+            cursor: default;
+        }
+        
+        .skill-list li:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 5px 10px rgba(58,107,79,0.3);
         }
         
         /* Projets */
@@ -191,6 +374,17 @@
             box-shadow: var(--shadow);
             margin-bottom: 2.5rem;
             border: 1px solid var(--border-light);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+        }
+        
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-hover);
         }
         
         .project-gallery {
@@ -199,6 +393,7 @@
             gap: 6px;
             background: #f0f4fa;
             padding: 6px;
+            transition: var(--transition);
         }
         
         .gallery-item {
@@ -211,7 +406,7 @@
             color: var(--primary);
             font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
             border: 2px solid transparent;
             background-size: cover;
             background-position: center;
@@ -219,38 +414,13 @@
         
         .gallery-item:hover {
             border-color: var(--primary);
-            transform: scale(0.98);
-        }
-        
-        .gallery-item.add-photo {
-            background-color: var(--primary-light);
-            border: 2px dashed var(--primary);
-            opacity: 0.7;
-        }
-        
-        .gallery-item.add-photo:hover {
-            opacity: 1;
-            background-color: #d4e2f5;
+            transform: scale(0.96) rotate(-1deg);
+            filter: brightness(0.95);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .project-content {
             padding: 2rem;
-        }
-        
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        
-        .tech-tag {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 0.25rem 1rem;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 500;
         }
         
         .dev-badge {
@@ -261,14 +431,32 @@
             font-size: 0.9rem;
             font-weight: 600;
             display: inline-block;
+            transition: var(--transition);
         }
         
-        /* Timeline expérience (détaillée) */
-        .timeline {
-            max-width: 900px;
-            margin: 0 auto;
+        .dev-badge:hover {
+            transform: rotate(2deg) scale(1.05);
+            background: #ffe4b5;
         }
         
+        .tech-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: default;
+        }
+        
+        .tech-tag:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Timeline animée */
         .timeline-item {
             background: white;
             border-radius: 28px;
@@ -276,14 +464,25 @@
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-light);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 1s forwards;
         }
         
-        .timeline-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
+        .timeline-item:nth-child(even) {
+            transform: translateX(20px);
+            animation: slideInRight 1s forwards;
+        }
+        
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.5s; }
+        
+        .timeline-item:hover {
+            transform: scale(1.02) translateY(-5px) !important;
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
         }
         
         .timeline-date {
@@ -293,36 +492,21 @@
             border-radius: 40px;
             font-weight: 600;
             font-size: 0.9rem;
+            transition: var(--transition);
         }
         
-        .timeline-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .timeline-sub {
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-        
-        .timeline-desc ul {
-            list-style: none;
-            padding-left: 0;
+        .timeline-item:hover .timeline-date {
+            background: var(--accent);
+            transform: scale(1.05);
         }
         
         .timeline-desc li {
-            margin-bottom: 0.6rem;
-            display: flex;
-            align-items: baseline;
+            transition: var(--transition);
         }
         
-        .timeline-desc li i {
-            color: var(--accent);
-            margin-right: 0.8rem;
-            font-size: 0.9rem;
-            width: 18px;
+        .timeline-desc li:hover {
+            transform: translateX(8px);
+            color: var(--primary);
         }
         
         /* Contact */
@@ -330,6 +514,14 @@
             display: flex;
             align-items: center;
             margin-bottom: 1.8rem;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50px;
+        }
+        
+        .contact-item:hover {
+            background: var(--primary-light);
+            transform: translateX(10px);
         }
         
         .contact-icon {
@@ -343,6 +535,37 @@
             color: var(--primary);
             font-size: 1.3rem;
             margin-right: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .contact-item:hover .contact-icon {
+            background: var(--accent);
+            color: white;
+            transform: rotate(360deg);
+            transition: transform 0.8s ease;
+        }
+        
+        .btn {
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn-primary {
@@ -355,6 +578,8 @@
         
         .btn-primary:hover {
             background-color: #15334d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30,60,92,0.3);
         }
         
         .btn-outline-primary {
@@ -367,24 +592,46 @@
         .btn-outline-primary:hover {
             background-color: var(--primary);
             color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30,60,92,0.2);
         }
         
         footer {
             background: var(--primary);
             color: white;
             padding: 3rem 0 2rem;
+            transition: var(--transition);
+        }
+        
+        footer a {
+            color: white;
+            margin: 0 0.5rem;
+            font-size: 1.4rem;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        footer a:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: var(--accent);
         }
         
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .project-gallery { grid-template-columns: repeat(5, 1fr); gap: 3px; }
+            .timeline-item:nth-child(even) { transform: translateX(0); }
+        }
+        
+        /* Loader animation (très léger) */
+        .pulse-animation {
+            animation: pulse-glow 2s infinite;
         }
     </style>
 </head>
 <body>
 
 <!-- Navigation enrichie -->
-<nav class="navbar navbar-expand-lg fixed-top">
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container">
         <a class="navbar-brand" href="#home">Junior <span>ZOC</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -397,15 +644,13 @@
                 <li class="nav-item"><a class="nav-link" href="#skills">Compétences</a></li>
                 <li class="nav-item"><a class="nav-link" href="#projects">Projets</a></li>
                 <li class="nav-item"><a class="nav-link" href="#experience">Expériences</a></li>
-                <li class="nav-item"><a class="nav-link" href="#education">Formation</a></li>
-                <li class="nav-item"><a class="nav-link" href="#interests">Centres d'intérêt</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- HERO - Phrase générale sans technologie mise en avant -->
+<!-- HERO -->
 <section id="home" class="hero">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -413,9 +658,9 @@
                 <h1 class="mb-3">ZOCLANCLOUNON <span class="highlight">Ozias Junior</span></h1>
                 <p class="lead mb-4">Développeur web junior • en phase d'apprentissage continu</p>
                 <p class="mb-4" style="color: var(--text-muted); font-size: 1.1rem;">
-                    Jeune développeur avec une licence en sciences informatiques, motivé par l'envie d'apprendre et de progresser. 
-                    Je consolide mes compétences à travers des projets académiques et personnels. 
-                    Actuellement à la recherche d'un stage ou d'une mission pour développer mon expérience professionnelle.
+                   Titulaire d’une licence en sciences informatiques, je suis un développeur web junior animé par une forte volonté de progression et d’amélioration continue. Je renforce mes compétences techniques à travers des projets académiques et personnels, en mettant l’accent sur la rigueur, la qualité du code et les bonnes pratiques de développement.
+
+Actuellement à la recherche d’un stage ou d’une première mission professionnelle, je souhaite intégrer un environnement stimulant afin de consolider mon expérience, contribuer activement à des projets concrets et évoluer aux côtés de professionnels expérimentés.
                 </p>
                 <div class="mb-4">
                     <span class="badge-cv"><i class="fa-regular fa-calendar me-1"></i> 03/04/2002</span>
@@ -424,7 +669,7 @@
                     <span class="badge-cv"><i class="fa-regular fa-phone me-1"></i> +229 0151571509</span>
                 </div>
                 <div>
-                    <a href="#projects" class="btn btn-primary btn-lg me-2 rounded-pill px-4"><i class="fa-regular fa-folder-open me-2"></i>Voir mes projets</a>
+                    <a href="#projects" class="btn btn-primary btn-lg me-2 rounded-pill px-4 pulse-animation"><i class="fa-regular fa-folder-open me-2"></i>Voir mes projets</a>
                     <a href="#contact" class="btn btn-outline-primary btn-lg rounded-pill px-4"><i class="fa-regular fa-paper-plane me-2"></i>Me contacter</a>
                 </div>
             </div>
@@ -437,12 +682,12 @@
     </div>
 </section>
 
-<!-- À PROPOS (informations personnelles) -->
+<!-- À PROPOS -->
 <section id="about" class="section">
     <div class="container">
         <h2 class="section-title text-center">Informations personnelles</h2>
         <div class="row g-4">
-            <div class="col-md-6">
+            <div class="col-md-6" data-animation="slide-left">
                 <div class="skill-card">
                     <h5 class="skill-category"><i class="fa-regular fa-user me-2"></i>État civil</h5>
                     <ul class="list-unstyled">
@@ -461,7 +706,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" data-animation="slide-right">
                 <div class="skill-card">
                     <h5 class="skill-category"><i class="fa-regular fa-comment-dots me-2"></i>Langues parlées</h5>
                     <ul class="list-unstyled">
@@ -486,12 +731,12 @@
     </div>
 </section>
 
-<!-- COMPÉTENCES - sans pourcentages, simple liste comme dans le CV -->
+<!-- COMPÉTENCES -->
 <section id="skills" class="section bg-white">
     <div class="container">
         <h2 class="section-title text-center">Compétences</h2>
         <div class="row g-4">
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-animation="slide-left">
                 <div class="skill-card">
                     <h5 class="skill-category"><i class="fa-solid fa-code me-2"></i>Développement web</h5>
                     <ul class="skill-list">
@@ -509,7 +754,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-animation="slide-right">
                 <div class="skill-card">
                     <h5 class="skill-category"><i class="fa-solid fa-database me-2"></i>Bases de données</h5>
                     <ul class="skill-list">
@@ -534,7 +779,7 @@
     </div>
 </section>
 
-<!-- PROJETS - avec emplacements pour 5 photos -->
+<!-- PROJETS -->
 <section id="projects" class="section">
     <div class="container">
         <h2 class="section-title text-center">Projets réalisés</h2>
@@ -542,22 +787,11 @@
         <!-- Projet 1: Maestro Business -->
         <div class="project-card">
             <div class="project-gallery" id="gallery-maestro">
-                <!-- 5 photos avec liens locaux images/maestro1.png à maestro5.png -->
-                <div class="gallery-item" style="background-image: url('images/maestro1.png'); background-size: cover; background-position: center;" 
-                     title="Maestro Business - capture 1" onclick="window.open('images/maestro1.png', '_blank')">
-                </div>
-                <div class="gallery-item" style="background-image: url('images/maestro2.png'); background-size: cover; background-position: center;" 
-                     title="Maestro Business - capture 2" onclick="window.open('images/maestro2.png', '_blank')">
-                </div>
-                <div class="gallery-item" style="background-image: url('images/maestro3.png'); background-size: cover; background-position: center;" 
-                     title="Maestro Business - capture 3" onclick="window.open('images/maestro3.png', '_blank')">
-                </div>
-                <div class="gallery-item" style="background-image: url('images/maestro4.png'); background-size: cover; background-position: center;" 
-                     title="Maestro Business - capture 4" onclick="window.open('images/maestro4.png', '_blank')">
-                </div>
-                <div class="gallery-item" style="background-image: url('images/maestro5.png'); background-size: cover; background-position: center;" 
-                     title="Maestro Business - capture 5" onclick="window.open('images/maestro5.png', '_blank')">
-                </div>
+                <img src="images/maestro1.png" alt="Maestro Business - capture 1" class="gallery-item">
+                <img src="images/maestro2.png" alt="Maestro Business - capture 2" class="gallery-item">
+                <img src="images/maestro3.png" alt="Maestro Business - capture 3" class="gallery-item">
+                <img src="images/maestro4.png" alt="Maestro Business - capture 4" class="gallery-item">
+                <img src="images/maestro5.png" alt="Maestro Business - capture 5" class="gallery-item">
             </div>
             <div class="project-content">
                 <div class="d-flex justify-content-between align-items-start">
@@ -580,10 +814,9 @@
             </div>
         </div>
         
-        <!-- Projet 2: PlumeMarket (en développement) -->
+        <!-- Projet 2: PlumeMarket -->
         <div class="project-card">
             <div class="project-gallery" style="background: #f5f1e7;">
-                <!-- Pour un projet en développement, on affiche un message plutôt que des emplacements photos -->
                 <div style="grid-column: 1/-1; padding: 2rem; text-align: center; background: #faf7f0; border-radius: 16px;">
                     <i class="fa-solid fa-hourglass-half fa-2x mb-2" style="color: #b58b4b;"></i>
                     <p class="mb-0 fw-semibold">Projet en cours de développement — Les captures d'écran seront disponibles prochainement</p>
@@ -608,11 +841,10 @@
                 </div>
             </div>
         </div>
-       
     </div>
-</section>  
+</section>
 
-<!-- EXPÉRIENCES PROFESSIONNELLES (détaillées comme sur le CV) -->
+<!-- EXPÉRIENCES -->
 <section id="experience" class="section bg-white">
     <div class="container">
         <h2 class="section-title text-center">Expériences professionnelles</h2>
@@ -673,58 +905,6 @@
     </div>
 </section>
 
-<!-- FORMATION -->
-<section id="education" class="section">
-    <div class="container">
-        <h2 class="section-title text-center">Formation</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="skill-card">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4>Licence en Sciences informatiques et Logiciels</h4>
-                            <p class="text-muted">Les Cours SONOU</p>
-                        </div>
-                        <span class="badge-cv">2021-2022</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4>Niveau 2: Économie Appliquée</h4>
-                            <p class="text-muted">Université d'Abomey Calavi / FASEG</p>
-                        </div>
-                        <span class="badge-cv">2018</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4>Baccalauréat (BAC C)</h4>
-                            <p class="text-muted">Les cours de soutien scolaire</p>
-                        </div>
-                        <span class="badge-cv">2018</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4>BEPC</h4>
-                            <p class="text-muted">CEG SURU-LÉRÉ</p>
-                        </div>
-                        <span class="badge-cv">2015</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4>CEP</h4>
-                            <p class="text-muted">CSP John Kennedy</p>
-                        </div>
-                        <span class="badge-cv">2011</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact" class="section bg-white">
     <div class="container">
@@ -774,11 +954,12 @@
 <footer>
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-md-6">
-                <p class="mb-0">© 2025 Junior ZOCLANCLOUNON • Développeur web junior</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a href="#home" class="text-white text-decoration-none"><i class="fa-regular fa-circle-up me-1"></i>Retour en haut</a>
+            <div class="col-md-6">© 2026 Junior ZOCLANCLOUNON • développeur web</div>
+            <div class="col-md-6 text-md-end footer-social">
+                <a href="https://github.com/Shijunior"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/junior-zoclanclounon-1805623a0"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:juniorzoclanclounon@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+                <a href="#home" class="ms-3"><i class="fa-regular fa-circle-up"></i></a>
             </div>
         </div>
     </div>
@@ -798,11 +979,20 @@
             });
         });
         
-        // Active nav link
+        // Active nav link + navbar scrolled effect
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-link');
+        const navbar = document.getElementById('mainNav');
         
         window.addEventListener('scroll', () => {
+            // navbar background
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // active link
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop - 100;
@@ -816,6 +1006,30 @@
                 if (link.getAttribute('href') === `#${current}`) {
                     link.classList.add('active');
                 }
+            });
+        });
+        
+        // Animation on scroll (simple déclencheur)
+        const animatedElements = document.querySelectorAll('[data-animation]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transition = 'opacity 1s ease';
+            observer.observe(el);
+        });
+        
+        // Gestion des images manquantes
+        document.querySelectorAll('img.gallery-item').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'https://via.placeholder.com/200x200/1e3c5c/ffffff?text=Projet';
+                this.alt = 'Image non trouvée';
             });
         });
     });
