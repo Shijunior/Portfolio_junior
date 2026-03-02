@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junior ZOCLANCLOUNON | Portfolio développeur web</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1e3c5c;
+            --primary-light: #e9f0f9;
+            --accent: #3a6b4f;
+            --text-dark: #1e2b37;
+            --text-muted: #4a5e6e;
+            --bg-light: #f5f9fe;
+            --border-light: #d4e0ec;
+            --card-white: #ffffff;
+            --shadow: 0 8px 24px rgba(0,20,40,0.06);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: rgba(255,255,255,0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            padding: 0.8rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--primary) !important;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            margin: 0 0.4rem;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            border-radius: 30px;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary) !important;
+            background-color: var(--primary-light);
+        }
+        
+        .nav-link.active {
+            color: var(--primary) !important;
+            background-color: var(--primary-light);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 130px 0 80px;
+            background: linear-gradient(145deg, #f0f6fd 0%, #ffffff 100%);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .hero .highlight {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .hero .lead {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+        }
+        
+        .avatar-placeholder {
+            width: 260px;
+            height: 260px;
+            background: linear-gradient(145deg, var(--primary), #2b4f72);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            margin: 0 auto;
+        }
+        
+        .badge-cv {
+            background-color: white;
+            color: var(--primary);
+            border-radius: 40px;
+            padding: 0.4rem 1.2rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-light);
+            margin-right: 0.6rem;
+            margin-bottom: 0.6rem;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 70px 0;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            position: relative;
+            color: var(--primary);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: var(--accent);
+            margin: 0.6rem auto 0;
+            border-radius: 4px;
+        }
+        
+        /* Cartes compétences (sans barres) */
+        .skill-card {
+            background: var(--card-white);
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            height: 100%;
+            border: 1px solid var(--border-light);
+        }
+        
+        .skill-category {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+        }
+        
+        .skill-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+        }
+        
+        .skill-list li {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Projets */
+        .project-card {
+            background: var(--card-white);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border-light);
+        }
+        
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            background: #f0f4fa;
+            padding: 6px;
+        }
+        
+        .gallery-item {
+            aspect-ratio: 1/1;
+            background: #d9e2ef;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .gallery-item:hover {
+            border-color: var(--primary);
+            transform: scale(0.98);
+        }
+        
+        .gallery-item.add-photo {
+            background-color: var(--primary-light);
+            border: 2px dashed var(--primary);
+            opacity: 0.7;
+        }
+        
+        .gallery-item.add-photo:hover {
+            opacity: 1;
+            background-color: #d4e2f5;
+        }
+        
+        .project-content {
+            padding: 2rem;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .tech-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .dev-badge {
+            background: #fff1d6;
+            color: #a16500;
+            padding: 0.25rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        /* Timeline expérience (détaillée) */
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .timeline-item {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+        }
+        
+        .timeline-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-date {
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .timeline-sub {
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-desc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .timeline-desc li {
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .timeline-desc li i {
+            color: var(--accent);
+            margin-right: 0.8rem;
+            font-size: 0.9rem;
+            width: 18px;
+        }
+        
+        /* Contact */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.8rem;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-right: 1.2rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            padding: 0.6rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: #15334d;
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            border-radius: 50px;
+            padding: 0.6rem 2rem;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .project-gallery { grid-template-columns: repeat(5, 1fr); gap: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation enrichie -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#home">Junior <span>ZOC</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#home">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">Profil</a></li>
+                <li class="nav-item"><a class="nav-link" href="#skills">Compétences</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects">Projets</a></li>
+                <li class="nav-item"><a class="nav-link" href="#experience">Expériences</a></li>
+                <li class="nav-item"><a class="nav-link" href="#education">Formation</a></li>
+                <li class="nav-item"><a class="nav-link" href="#interests">Centres d'intérêt</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO - Phrase générale sans technologie mise en avant -->
+<section id="home" class="hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <h1 class="mb-3">ZOCLANCLOUNON <span class="highlight">Ozias Junior</span></h1>
+                <p class="lead mb-4">Développeur web junior • en phase d'apprentissage continu</p>
+                <p class="mb-4" style="color: var(--text-muted); font-size: 1.1rem;">
+                    Jeune développeur avec une licence en sciences informatiques, motivé par l'envie d'apprendre et de progresser. 
+                    Je consolide mes compétences à travers des projets académiques et personnels. 
+                    Actuellement à la recherche d'un stage ou d'une mission pour développer mon expérience professionnelle.
+                </p>
+                <div class="mb-4">
+                    <span class="badge-cv"><i class="fa-regular fa-calendar me-1"></i> 03/04/2002</span>
+                    <span class="badge-cv"><i class="fa-regular fa-location-dot me-1"></i> Sèmé-Dandji</span>
+                    <span class="badge-cv"><i class="fa-regular fa-envelope me-1"></i> juniorzoclanclounon@gmail.com</span>
+                    <span class="badge-cv"><i class="fa-regular fa-phone me-1"></i> +229 0151571509</span>
+                </div>
+                <div>
+                    <a href="#projects" class="btn btn-primary btn-lg me-2 rounded-pill px-4"><i class="fa-regular fa-folder-open me-2"></i>Voir mes projets</a>
+                    <a href="#contact" class="btn btn-outline-primary btn-lg rounded-pill px-4"><i class="fa-regular fa-paper-plane me-2"></i>Me contacter</a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div class="avatar-placeholder">
+                    JZ
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- À PROPOS (informations personnelles) -->
+<section id="about" class="section">
+    <div class="container">
+        <h2 class="section-title text-center">Informations personnelles</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="skill-card">
+                    <h5 class="skill-category"><i class="fa-regular fa-user me-2"></i>État civil</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Nom complet :</strong> Zoclanclounon Ozias Junior</li>
+                        <li class="mb-2"><strong>Date de naissance :</strong> 03 avril 2002</li>
+                        <li class="mb-2"><strong>Localisation :</strong> Sèmé-Dandji, Bénin</li>
+                    </ul>
+                    
+                    <h5 class="skill-category mt-4"><i class="fa-regular fa-gem me-2"></i>Qualités personnelles</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge-cv">Sens de l'organisation</span>
+                        <span class="badge-cv">Esprit d'équipe</span>
+                        <span class="badge-cv">Adaptabilité</span>
+                        <span class="badge-cv">Esprit analytique</span>
+                        <span class="badge-cv">Communication claire</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="skill-card">
+                    <h5 class="skill-category"><i class="fa-regular fa-comment-dots me-2"></i>Langues parlées</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Français :</strong> langue de travail, excellente aisance écrit/oral</li>
+                        <li class="mb-2"><strong>Anglais :</strong> bases fonctionnelles (lecture, écriture, écoute)</li>
+                        <li class="mb-2"><strong>Wémégbé :</strong> langue maternelle</li>
+                        <li class="mb-2"><strong>Fon, Goun :</strong> utilisés à l'oral</li>
+                    </ul>
+                    
+                    <h5 class="skill-category mt-4"><i class="fa-regular fa-heart me-2"></i>Centres d'intérêt</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge-cv">Mini-projets personnels</span>
+                        <span class="badge-cv">Culture générale</span>
+                        <span class="badge-cv">Quiz & débats</span>
+                        <span class="badge-cv">Mangas / animés</span>
+                        <span class="badge-cv">Football amateur</span>
+                        <span class="badge-cv">Suivi sportif (rugby, tennis)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMPÉTENCES - sans pourcentages, simple liste comme dans le CV -->
+<section id="skills" class="section bg-white">
+    <div class="container">
+        <h2 class="section-title text-center">Compétences</h2>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="skill-card">
+                    <h5 class="skill-category"><i class="fa-solid fa-code me-2"></i>Développement web</h5>
+                    <ul class="skill-list">
+                        <li>HTML (intermédiaire)</li>
+                        <li>CSS (intermédiaire)</li>
+                        <li>Bootstrap (intermédiaire)</li>
+                        <li>PHP (intermédiaire)</li>
+                        <li>JavaScript (intermédiaire)</li>
+                        <li>jQuery (intermédiaire)</li>
+                        <li>Laravel (notions)</li>
+                        <li>Symfony (utilisation en projet)</li>
+                        <li>Python (notions, projet)</li>
+                        <li>Java (notions)</li>
+                        <li>Electron (notions)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="skill-card">
+                    <h5 class="skill-category"><i class="fa-solid fa-database me-2"></i>Bases de données</h5>
+                    <ul class="skill-list">
+                        <li>MySQL (connaissances fondamentales)</li>
+                        <li>SQLite (utilisation basique)</li>
+                        <li>SQL Server (utilisation basique)</li>
+                    </ul>
+                    
+                    <h5 class="skill-category mt-4"><i class="fa-solid fa-wrench me-2"></i>Outils & logiciels</h5>
+                    <ul class="skill-list">
+                        <li>LaTeX (TeXmaker)</li>
+                        <li>UML (diagrammes)</li>
+                        <li>Adobe Photoshop (intermédiaire)</li>
+                        <li>Microsoft Word</li>
+                        <li>Microsoft Excel</li>
+                        <li>Microsoft PowerPoint</li>
+                        <li>Microsoft Publisher</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJETS - avec emplacements pour 5 photos -->
+<section id="projects" class="section">
+    <div class="container">
+        <h2 class="section-title text-center">Projets réalisés</h2>
+        
+        <!-- Projet 1: Maestro Business -->
+        <div class="project-card">
+            <div class="project-gallery" id="gallery-maestro">
+                <!-- 5 photos avec liens locaux images/maestro1.png à maestro5.png -->
+                <div class="gallery-item" style="background-image: url('images/maestro1.png'); background-size: cover; background-position: center;" 
+                     title="Maestro Business - capture 1" onclick="window.open('images/maestro1.png', '_blank')">
+                </div>
+                <div class="gallery-item" style="background-image: url('images/maestro2.png'); background-size: cover; background-position: center;" 
+                     title="Maestro Business - capture 2" onclick="window.open('images/maestro2.png', '_blank')">
+                </div>
+                <div class="gallery-item" style="background-image: url('images/maestro3.png'); background-size: cover; background-position: center;" 
+                     title="Maestro Business - capture 3" onclick="window.open('images/maestro3.png', '_blank')">
+                </div>
+                <div class="gallery-item" style="background-image: url('images/maestro4.png'); background-size: cover; background-position: center;" 
+                     title="Maestro Business - capture 4" onclick="window.open('images/maestro4.png', '_blank')">
+                </div>
+                <div class="gallery-item" style="background-image: url('images/maestro5.png'); background-size: cover; background-position: center;" 
+                     title="Maestro Business - capture 5" onclick="window.open('images/maestro5.png', '_blank')">
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h3>Maestro Business</h3>
+                    <span class="dev-badge"><i class="fa-regular fa-circle-check me-1"></i>Complété</span>
+                </div>
+                <p class="text-muted">Plateforme complète de gestion de boutique permettant de gérer clients, produits, commandes et facturation en un seul endroit. Solution tout-en-un pour les petits commerces.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">HTML/CSS</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">jQuery</span>
+                </div>
+                <div class="mt-3">
+                    <a href="#" class="btn btn-sm btn-outline-primary me-2" onclick="alert('Lien à ajouter - https://votresite.com/maestro')"><i class="fa-regular fa-link me-1"></i> Voir le site</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary" onclick="alert('Lien GitHub à ajouter')"><i class="fa-brands fa-github me-1"></i> Code source</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projet 2: PlumeMarket (en développement) -->
+        <div class="project-card">
+            <div class="project-gallery" style="background: #f5f1e7;">
+                <!-- Pour un projet en développement, on affiche un message plutôt que des emplacements photos -->
+                <div style="grid-column: 1/-1; padding: 2rem; text-align: center; background: #faf7f0; border-radius: 16px;">
+                    <i class="fa-solid fa-hourglass-half fa-2x mb-2" style="color: #b58b4b;"></i>
+                    <p class="mb-0 fw-semibold">Projet en cours de développement — Les captures d'écran seront disponibles prochainement</p>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h3>PlumeMarket</h3>
+                    <span class="dev-badge" style="background:#fff1d6; color:#a16500;"><i class="fa-regular fa-clock me-1"></i>En développement</span>
+                </div>
+                <p class="text-muted">Plateforme e-commerce dédiée à la vente de poules, cailles et œufs frais. Les visiteurs peuvent commander sans créer de compte et consulter des recettes.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Bootstrap</span>
+                    <span class="tech-tag">jQuery</span>
+                    <span class="tech-tag">API REST (prévu)</span>
+                </div>
+                <div class="mt-3">
+                    <a href="#" class="btn btn-sm btn-outline-primary me-2" onclick="alert('Lien temporaire - projet en construction')"><i class="fa-regular fa-link me-1"></i> Aperçu (bientôt)</a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary" onclick="alert('Dépôt privé pour le moment')"><i class="fa-brands fa-github me-1"></i> Code source</a>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</section>  
+
+<!-- EXPÉRIENCES PROFESSIONNELLES (détaillées comme sur le CV) -->
+<section id="experience" class="section bg-white">
+    <div class="container">
+        <h2 class="section-title text-center">Expériences professionnelles</h2>
+        
+        <div class="timeline">
+            <!-- Immokini Sarl -->
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <span class="timeline-date">2025 (en cours)</span>
+                    <h3 class="timeline-title">Stagiaire</h3>
+                </div>
+                <div class="timeline-sub">Immokini Sarl</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Conception d'affiches publicitaires et de visuels promotionnels pour les campagnes marketing à l'aide d'Adobe Photoshop.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Mise en place et configuration d'un site/blog sur la plateforme Blogger, incluant la personnalisation du thème, la structuration des pages et la publication de contenus.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Création, structuration et mise en ligne de packs digitaux destinés à la vente, avec organisation des contenus, descriptifs et visuels sur la plateforme Chariow.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Traitement, analyse et exploitation de données sur Microsoft Excel, notamment à partir des fichiers de suivi des appels entrants de l'entreprise.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Utilisation d'outils de communication et d'automatisation marketing (SendBlaster, WaCRM, WaSender) pour la diffusion de messages commerciaux et la gestion de la relation client.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Gestion et suivi des campagnes publicitaires sur Facebook et Instagram via Meta Business Suite, incluant la planification, la publication et l'optimisation de contenus sponsorisés.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Blue Life Tech -->
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <span class="timeline-date">Février - Mai 2025</span>
+                    <h3 class="timeline-title">Stagiaire développeur web</h3>
+                </div>
+                <div class="timeline-sub">Blue Life Tech</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Participation au développement de modules applicatifs en PHP et intégration d'interfaces front-end en HTML, CSS et JavaScript.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Contribution à la mise en place d'un système de gestion interne reposant sur une base de données MySQL.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Utilisation de l'environnement Symfony pour la conception de prototypes d'applications web.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- CEG Tchonvi -->
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <span class="timeline-date">2020 - 2021</span>
+                    <h3 class="timeline-title">Responsable de cabine et gestionnaire de fournitures scolaires</h3>
+                </div>
+                <div class="timeline-sub">CEG Tchonvi</div>
+                <div class="timeline-desc">
+                    <ul>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Gestion des impressions, photocopies et fournitures scolaires à destination des élèves et du corps enseignant.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Tenue quotidienne de la caisse, suivi des encaissements et gestion des recettes.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Suivi des stocks, gestion des commandes et réception des fournitures scolaires.</li>
+                        <li><i class="fa-regular fa-pen-to-square"></i> Accueil des élèves et service client, avec un accompagnement quotidien et un sens de l'organisation.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FORMATION -->
+<section id="education" class="section">
+    <div class="container">
+        <h2 class="section-title text-center">Formation</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="skill-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4>Licence en Sciences informatiques et Logiciels</h4>
+                            <p class="text-muted">Les Cours SONOU</p>
+                        </div>
+                        <span class="badge-cv">2021-2022</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4>Niveau 2: Économie Appliquée</h4>
+                            <p class="text-muted">Université d'Abomey Calavi / FASEG</p>
+                        </div>
+                        <span class="badge-cv">2018</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4>Baccalauréat (BAC C)</h4>
+                            <p class="text-muted">Les cours de soutien scolaire</p>
+                        </div>
+                        <span class="badge-cv">2018</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4>BEPC</h4>
+                            <p class="text-muted">CEG SURU-LÉRÉ</p>
+                        </div>
+                        <span class="badge-cv">2015</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4>CEP</h4>
+                            <p class="text-muted">CSP John Kennedy</p>
+                        </div>
+                        <span class="badge-cv">2011</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section bg-white">
+    <div class="container">
+        <h2 class="section-title text-center">Me contacter</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="skill-card p-4">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-regular fa-envelope"></i></div>
+                        <div>
+                            <strong>Email</strong><br>
+                            <a href="mailto:juniorzoclanclounon@gmail.com">juniorzoclanclounon@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-regular fa-phone"></i></div>
+                        <div>
+                            <strong>Téléphone / WhatsApp</strong><br>
+                            <a href="https://wa.me/2290151571509">+229 01 51 57 15 09</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fa-regular fa-location-dot"></i></div>
+                        <div>
+                            <strong>Localisation</strong><br>
+                            Sèmé-Dandji, Bénin
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <a href="https://github.com/Shijunior" target="_blank" class="btn btn-outline-primary rounded-pill"><i class="fa-brands fa-github me-2"></i>GitHub</a>
+                        <a href="https://www.linkedin.com/in/junior-zoclanclounon-1805623a0" target="_blank" class="btn btn-outline-primary rounded-pill"><i class="fa-brands fa-linkedin me-2"></i>LinkedIn</a>
+                        <a href="mailto:juniorzoclanclounon@gmail.com" class="btn btn-primary rounded-pill"><i class="fa-regular fa-envelope me-2"></i>Email</a>
+                    </div>
+                    
+                    <div class="alert alert-primary mt-4 mb-0 text-center">
+                        <i class="fa-regular fa-circle-check me-2"></i> Recherche active de stage ou missions freelance en développement web
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="mb-0">© 2025 Junior ZOCLANCLOUNON • Développeur web junior</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#home" class="text-white text-decoration-none"><i class="fa-regular fa-circle-up me-1"></i>Retour en haut</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Active nav link
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
